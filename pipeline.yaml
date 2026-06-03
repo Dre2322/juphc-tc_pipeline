@@ -34,3 +34,36 @@ spec:
         value: $(params.branch)
       runAfter:
         - init
+    - name: npminstall
+      runAfter:
+        - clone
+      taskRef:
+        name: npminstall
+      workspaces:
+        - name: source
+          workspace: pipeline-workspace
+
+    - name: tests
+      runAfter:
+        - npminstall
+      taskRef:
+        name: jasmine
+      workspaces:
+        - name: source
+          workspace: pipeline-workspace
+
+    - name: build
+      runAfter:
+        - tests
+      taskRef:
+        name: buildah
+        kind: ClusterTask
+      params:
+        - name: IMAGE
+          value: $(params.build-image)
+      workspaces:
+        - name: source
+          workspace: pipeline-workspace
+        - name: dockerconfig
+          workspace: dockerconfig-ws
+
