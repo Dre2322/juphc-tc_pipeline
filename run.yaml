@@ -20,3 +20,5 @@ spec:
       value: "main"
     - name: app-name
       value: "tax-calculator"
+    - name: build-image
+      value: "us.icr.io/sn-labs-u2dre34/tax-calculator"
